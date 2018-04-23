@@ -2,32 +2,32 @@
 $().ready(function() {
     console.log('loaded')
 
-    $('#login form #connect').click(function() {
-        const jCreatorID = $('#create #createID')
-        const jNickname = $('#c #nickname')
+    $('#create form #loginButton').click(function() {
+        const jUsername = $('#create #username')
+        const jCreatorPIN = $('#create #creatorPIN')
 
-        const jCreatorID = jGroupID.val()
-        const nickname = jNickname.val()
+        const username = jUsername.val()
+        const creatorPIN = jCreatorPIN.val()
+        console.log("click")
         
-        jGroupID.toggleClass('invalid', groupID == "")
-        jNickname.toggleClass('invalid', nickname == "")
+        jUsername.toggleClass('invalid', username == "")
+        jCreatorPIN.toggleClass('invalid', creatorPIN == "")
         
-        if(groupID && nickname) {
-            console.log(groupID, nickname)
+        if(username && creatorPIN) {
             //send request
-            const jLoader = $('#login .loader')
+            const jLoader = $('#create .loader')
             jLoader.addClass('active')
-            $.post('join', {groupID: groupID, nickname: nickname}, function(data, stat) {
+            $.post('create', {username: username, PIN: creatorPIN}, function(data, stat) {
                 console.log(data, status)
                 
                 jLoader.removeClass('active')
                 
                 //set groupInfo if invalid
-                jGroupID.toggleClass('invalid', !data.groupValid)
+                jUsername.toggleClass('invalid', !data.groupValid)
                 $('.inputInfo#groupIDinfo').toggleClass('active', !data.groupValid)
                 
                 //set nameInfo if invalid
-                jNickname.toggleClass('invalid',!data.nameValid)
+                jCreatorPIN.toggleClass('invalid',!data.nameValid)
                 $('.inputInfo#nicknameInfo').toggleClass('active', !data.nameValid)
             }, 'json')
         }
