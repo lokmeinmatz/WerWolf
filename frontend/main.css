@@ -4,9 +4,8 @@ body {
     background: #073b4c;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: white;
-    width: 100vW;
-    height: 100vh;
-    overflow: hidden;
+    width: 100vw;
+    min-height: 100vh;
 }
 
 * {
@@ -79,6 +78,8 @@ input.invalid {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
+    text-decoration: none;
 }
 
 .button p {

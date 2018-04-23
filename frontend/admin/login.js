@@ -8,7 +8,6 @@ $().ready(function() {
 
         const username = jUsername.val()
         const creatorPIN = jCreatorPIN.val()
-        console.log("click")
         
         jUsername.toggleClass('invalid', username == "")
         jCreatorPIN.toggleClass('invalid', creatorPIN == "")
@@ -17,18 +16,22 @@ $().ready(function() {
             //send request
             const jLoader = $('#create .loader')
             jLoader.addClass('active')
-            $.post('create', {username: username, PIN: creatorPIN}, function(data, stat) {
+            $.post('login', {username: username, PIN: creatorPIN}, function(data, stat) {
                 console.log(data, status)
                 
                 jLoader.removeClass('active')
                 
                 //set groupInfo if invalid
-                jUsername.toggleClass('invalid', !data.groupValid)
-                $('.inputInfo#groupIDinfo').toggleClass('active', !data.groupValid)
+                jUsername.toggleClass('invalid', !data.userValid)
+                $('.inputInfo#groupIDinfo').toggleClass('active', !data.userValid)
                 
                 //set nameInfo if invalid
-                jCreatorPIN.toggleClass('invalid',!data.nameValid)
-                $('.inputInfo#nicknameInfo').toggleClass('active', !data.nameValid)
+                jCreatorPIN.toggleClass('invalid',!data.PINvalid)
+                $('.inputInfo#nicknameInfo').toggleClass('active', !data.PINvalid)
+
+                if(data.reload) {
+                    location.reload()
+                }
             }, 'json')
         }
 

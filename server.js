@@ -3,9 +3,10 @@ const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 
-const GameSession = require(__dirname+'/server/GameSession.js')
-const User = require(__dirname+'/server/User.js')
+const bcrypt = require('bcrypt')
 
+const GameSession = require(__dirname+'/server/GameSession.js')
+const Users = require(__dirname+'/server/Users.js')
 let gameSessions = new Map()
 let users = new Map()
 
@@ -45,17 +46,45 @@ app.get('/', function(req, res) {
 
 
 app.get('/admin', function(req, res) {
-    console.log('req')
-    if(req.session.id && users.has(req.session.id) && users.get(req.session.id)) {
+    console.log(req.session)
+    console.log(users)
+    if(req.session.id && users.has(req.session.id) && users.get(req.session.id).state == Users.ADMIN) {
         //admin was allready logged in
-        return res.sendFile(__dirname+'/admin/admin.html')
+        return res.sendFile(__dirname+'/frontend/admin/admin.html')
     }
-    res.sendFile(__dirname+'/frontend/create/create.html')
+    else {
+        req.session.id = null
+    }
+    res.sendFile(__dirname+'/frontend/admin/login.html')
 })
 
-app.post('/login', function(req, res) {
+app.post('/admin/login', function(req, res) {
 
+    console.log("Admin tries to login")
+    if(!req.body.username || !req.body.PIN) {
+        return res.send({userValid: false, PINvalid: false, reload: false})
+    }
     //let admin login
+    if(Users.VALID_ADMINS.has(req.body.username)) {
+        //user is allowed to join
+        //chekc if creators id is valid
+        if(req.body.PIN == 'kartoffelsalat') {
+            //create cookie id
+            if(!req.session.id)bcrypt.hash(new Date().getTime().toString(), 1, (err, hash) => {
+                console.log("New ID "+hash)
+                //set hash
+                req.session.id = hash
+                users.set(hash, new Users.User(hash, req.body.username, Users.ADMIN))
+
+                console.log(users)
+                return res.send({userValid: true, PINvalid: true, reload: true})
+            })
+        }
+        else {
+            return res.send({userValid: true, PINvalid: false, reload: false})
+        }
+    }
+    else return res.send({userValid: false, PINvalid: true, reload: false})
 
 })
 

@@ -1,0 +1,14 @@
+#controls {
+    display: flex;
+    margin: 1rem;
+}
+
+#players {
+    margin: 1rem;
+}
+
+#players #playerList {
+    padding: 0px;
+    background-color: red;
+}
+
