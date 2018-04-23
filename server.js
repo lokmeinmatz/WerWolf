@@ -7,10 +7,12 @@ const bcrypt = require('bcrypt')
 
 const GameSession = require(__dirname+'/server/GameSession.js')
 const Users = require(__dirname+'/server/Users.js')
-let gameSessions = new Map()
 let users = new Map()
 
 const app = express()
+
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
 
 //static : all from parcel dist
 app.use(express.static(__dirname+'/frontend'))
@@ -102,3 +104,12 @@ app.post('/join', function(req, res) {
 })
 
 app.listen(3000, () => console.log('Visit on http://localhost:3000/'))
+
+
+
+io.on('connection', function(socket) {
+
+  //check if user is known
+  console.log(socket.request)
+    
+})

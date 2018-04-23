@@ -1,13 +1,10 @@
 /**
  * Session to store data
  */
-class GameSession {
-    /**
-     * @param {string} id - names the ID of the session
-     */
-    constructor(id) {
-    this.id = id
-    }
+const GameSession = {
+  id: '',
+  state: 0,
+  userIDs: []
 }
 
 module.exports = GameSession
