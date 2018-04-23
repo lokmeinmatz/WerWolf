@@ -34,6 +34,9 @@ app.use(cookieSession({
 
 */
 
+//update server cookies???
+
+
 app.get('/', function(req, res) {
 
     console.log('req')
@@ -41,12 +44,18 @@ app.get('/', function(req, res) {
 })
 
 
-app.get('/create', function(req, res) {
+app.get('/admin', function(req, res) {
     console.log('req')
+    if(req.session.id && users.has(req.session.id) && users.get(req.session.id)) {
+        //admin was allready logged in
+        return res.sendFile(__dirname+'/admin/admin.html')
+    }
     res.sendFile(__dirname+'/frontend/create/create.html')
 })
 
-app.post('/create', function(req, res) {
+app.post('/login', function(req, res) {
+
+    //let admin login
 
 })
 
