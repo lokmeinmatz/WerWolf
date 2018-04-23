@@ -1,4 +1,3 @@
-let $ = require('./jquery')
 
 $().ready(function() {
     console.log('loaded')
@@ -11,10 +10,19 @@ $().ready(function() {
 
         const groupID = jGroupID.val()
         const nickname = jNickname.val()
-        console.log(jNickname)
-
+        
         jGroupID.toggleClass('invalid', groupID == "")
         jNickname.toggleClass('invalid', nickname == "")
+        
+        if(groupID && nickname) {
+            console.log(groupID, nickname)
+            //send request
+            $.post('join', {groupID: groupID, nickname: nickname}, function(data, stat) {
+                console.log(data, status)
+
+                if(!data.groupExists) {}
+            }, 'json')
+        }
 
     })
 })
