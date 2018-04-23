@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>WerWolf</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="join/join.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="header.css" />
     <script src="jquery.js"></script>
-    <script src="frontend.js"></script>
+    <script src="join/join.js"></script>
 </head>
+
 <body>
 
     <header>
@@ -19,15 +22,26 @@
     <div id="login">
         <form>
             <p>Gruppen-ID</p>
-            <input id="groupID" type="text">
+            <div id="groupIDdiv">
+                <input id="groupID" type="text">
+                <div class="inputInfo" id="groupIDinfo">
+                    <p>Gib eine valide Gruppen-ID ein</p>
+                </div>
+            </div>
             <p>Nickname</p>
-            <input id="nickname" type="text">
+            <div id="nicknamediv">
+                <input id="nickname" type="text">
+                <div class="inputInfo" id="nicknameInfo">
+                    <p>Dieser Nickname ist schon vergeben</p>
+                </div>
+            </div>
             <div id="connect" class="button">
-                Verbinden
-                <div class="loader"></div> 
+                <p>Verbinden</p>
+                <div class="loader"></div>
             </div>
         </form>
     </div>
-    
+
 </body>
+
 </html>

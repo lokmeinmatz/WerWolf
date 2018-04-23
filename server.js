@@ -17,7 +17,13 @@ app.use(bodyParser.json())
 
 app.get('/', function(req, res) {
     console.log('req')
-    res.sendFile(__dirname+'/frontend/index.html')
+    res.sendFile(__dirname+'/frontend/join/join.html')
+})
+
+
+app.get('/create', function(req, res) {
+    console.log('req')
+    res.sendFile(__dirname+'/frontend/create/create.html')
 })
 
 
@@ -27,7 +33,7 @@ app.post('/join', function(req, res) {
 
     if(!gameSessions.has(req.body.groupID)) {
         //wrong session
-        return res.send({groupExists: false})
+        return res.send({groupValid: false, nameValid: req.body.nickname == 'Mat'})
     }
 
     console.log(`Joining ${req.body.groupID} as ${req.body.nickname}`)
