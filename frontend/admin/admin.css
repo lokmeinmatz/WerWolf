@@ -1,3 +1,11 @@
+#sessionInfos {
+    margin: 1rem;
+    display: flex;
+}
+#sessionInfos p {
+    margin-right: 2rem;
+}
+
 #controls {
     display: flex;
     margin: 1rem;
@@ -9,6 +17,16 @@
 
 #players #playerList {
     padding: 0px;
-    background-color: red;
+    list-style: none;
 }
 
+#playerList .player {
+    display: flex;
+    background-color: #118ab2;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+}
+
+.player p:nth-of-type(1) {
+    width: 300px;
+}
