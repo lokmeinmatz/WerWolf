@@ -2,40 +2,66 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>WerWolf Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="./admin.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="../main.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="../header.css" />
-    <script src="../jquery.js"></script>
-    <script src="../sio.js"></script>
-    <script src="./admin.js"></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>WerWolf Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="./admin.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="../main.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="../header.css" />
+  <!--<script src="../jquery.js"></script>-->
+  <script src="../vue.js"></script>
+  <script src="../sio.js"></script>
+  <script src="./admin-vue.js"></script>
 </head>
 
 <body>
 
-    <header>
-        <h1>WerWolf</h1>
-        <h2>Admin</h2>
-    </header>
-
+  <header>
+    <h1>WerWolf</h1>
+    <h2>Admin</h2>
+  </header>
+  <div id="content">
     <div id="controls">
-        <a href="" class="button">Start Game</a>
+      <a href="" class="button">Start Game</a>
     </div>
 
     <div id="players">
-        <h2>Spieler</h2>
-        <ul id="playerList">
-            <li>
-                <div class="player">Matthias</div>
-            </li>
-            <li>
-                <div class="player">Justin</div>
-            </li>
-        </ul>
+      <ul class="playerList" id="pLj">
+        <!--Players who will join-->
+        <li class="player" v-for="player in joinedPlayers">
+          <span>{{player.name}}</span>
+          <span>{{player.role}}</span>
+          <div class="accept">❌</div>
+          <div class="accept">✅</div>
+        </li>
+      </ul>
+      <h2>Spieler | {{alivePlayers.length}} ❤️ | {{deadPlayers.length}} ⚰️</h2>
+      <ul class="playerList" id="pLa">
+        <!--Players alive-->
+        <li class="player" v-for="player in alivePlayers">
+          <span>{{player.name}}</span>
+          <span>{{player.role}}</span>
+          <div class="options" v-on:click="opt">◄</div>
+        </li>
+      </ul>
+      <ul class="playerList" id="pLd">
+        <!--Players dead-->
+        <li class="player" v-for="player in deadPlayers">
+          <span>{{player.name}}</span>
+          <span>{{player.role}}</span>
+          <div class="options" v-on:click="opt">◄</div>
+        </li>
+      </ul>
     </div>
+    <nav id="context-menu" v-show="optionVisible" v-bind:style="{top: optY + 'px', right: optX + 'px'}">
+      <ul>
+        <li v-for="option in options">
+          {{option.name}}
+        </li>
+      </ul>
+    </nav>
+  </div>
 
 </body>
 

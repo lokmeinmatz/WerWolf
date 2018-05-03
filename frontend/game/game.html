@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WerWolf inGame</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="game/game.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="header.css" />
+    <script src="../sio.js"></script>
+    <script src="../vue.js"></script>
+    <script src="game/game.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <header>
+      <h1>{{me.name}}</h1>
+      <h2 v-on:click="showRole" v-if="!roleVisible" class="button">Wer bin ich?</h2>
+      <h2 v-on:click="showRole" v-else class="button">Du bist {{me.role}}</h2>
+    </header>
+
+    <div id="content">
+
+    </div>
+  </div>
+
+
+</body>
+
+</html>

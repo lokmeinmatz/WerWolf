@@ -6,6 +6,7 @@ body {
     color: white;
     width: 100vw;
     min-height: 100vh;
+    font-size: 0.9rem;
 }
 
 * {
@@ -116,6 +117,11 @@ form {
 }
 
 @media only screen and (min-width: 768px) {
+
+  html,
+  body {
+      font-size: 1rem;
+  }
     /* For desktop: */
     form p:nth-of-type(1) {
         grid-row: 1 / 1;

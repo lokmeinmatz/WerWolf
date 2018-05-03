@@ -3,11 +3,22 @@ const helmet = require('helmet')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
-const bcrypt = require('bcrypt')
+const sha1 = require('sha1')
 
 const GameSession = require(__dirname+'/server/GameSession.js')
+GameSession.reset()
+
+
 const Users = require(__dirname+'/server/Users.js')
-let users = new Map()
+
+//load admin manager
+const admin = require('./server/AdminSocket')
+
+
+/**
+ * @type {Users.User[]}
+ */
+let users = []
 
 const app = express()
 
@@ -33,19 +44,27 @@ app.use(cookieParser())
 */
 
 //update server cookies???
-
+function getUser(id) {
+  return users.find(u => u.id == id)
+}
 
 app.get('/', function(req, res) {
 
-    console.log('req')
-    res.sendFile(__dirname+'/frontend/join/join.html')
+  console.log('req')
+  if(!req.cookies.id || getUser(req.cookies.id) == undefined){
+    return res.sendFile(__dirname+'/frontend/join/join.html')
+  }
+  else{
+    return res.sendFile(__dirname+'/frontend/game/game.html')
+  }
+  
 })
-
 
 app.get('/admin', function(req, res) {
     //console.log(req.cookies)
     //console.log(users)
-    if(req.cookies.id && users.has(req.cookies.id) && users.get(req.cookies.id).state == Users.ADMIN) {
+    let id = req.cookies.id
+    if(id && getUser(id) != undefined && getUser(id).state == Users.ADMIN) {
         //admin was allready logged in
         return res.sendFile(__dirname+'/frontend/admin/admin.html')
     }
@@ -67,15 +86,17 @@ app.post('/admin/login', function(req, res) {
         //chekc if creators id is valid
         if(req.body.PIN == 'kartoffelsalat') {
             //create cookie id
-            if(!req.cookies.id)bcrypt.hash(new Date().getTime().toString(), 1, (err, hash) => {
-                //console.log("New ID "+hash)
-                //set hash
-                res.cookie('id', hash)
-                users.set(hash, new Users.User(hash, req.body.username, Users.ADMIN))
+            if(!req.cookies.id){
+              const hash = sha1(new Date().getTime().toString())
 
-                //console.log(users)
-                return res.send({userValid: true, PINvalid: true, reload: true})
-            })
+              //console.log("New ID "+hash)
+              //set hash
+              res.cookie('id', hash)
+              users.push(new Users.User(hash, req.body.username, Users.ADMIN))
+
+              //console.log(users)
+              return res.send({userValid: true, PINvalid: true, reload: true})
+            }
         }
         else {
             return res.send({userValid: true, PINvalid: false, reload: false})
@@ -90,21 +111,26 @@ app.post('/join', function(req, res) {
     console.log('join rquest')
     if(!req.body || !req.body.groupID || !req.body.nickname) return res.sendStatus(400)
 
-    if(!gameSessions.has(req.body.groupID)) {
+    if(req.body.groupID != GameSession.id || getUser(req.cookies.id) != undefined) {
         //wrong session
-        return res.send({groupValid: false, nameValid: req.body.nickname == 'Mat'})
+        return res.send({groupValid: false, nameValid: getUser(req.cookies.id) == undefined})
     }
 
     console.log(`Joining ${req.body.groupID} as ${req.body.nickname}`)
+
+    //generate user id
+    const uID = sha1(req.body.nickname + new Date().toDateString())
+
+    res.cookie('id', uID)
+    users.push(new Users.User(uID, req.body.username, Users.PLAYER))
+
+    return res.send({groupValid: true, nameValid: true})
 })
+
 
 const server = app.listen(3000, () => console.log('Visit on http://localhost:3000/'))
 const io = socket(server)
 
+admin.initAdminSocket(io)
 
-io.on('connection', function(socket) {
-
-  //check if user is known
-  console.log('connection')
-    
-})
+//console.log(admin.getAdminSocket())

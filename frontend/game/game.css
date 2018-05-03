@@ -1,0 +1,9 @@
+#content {
+  max-width: 800px;
+  display: block;
+  margin: 0px auto;
+}
+
+header .button {
+  margin-right: 0.2rem;
+}

@@ -31,6 +31,8 @@ $().ready(function() {
                 //set nameInfo if invalid
                 jNickname.toggleClass('invalid',!data.nameValid)
                 $('.inputInfo#nicknameInfo').toggleClass('active', !data.nameValid)
+
+                if(data.groupValid && data.nameValid) window.location.reload()
             }, 'json')
         }
 
