@@ -1,0 +1,25 @@
+{
+  "name": "werwolf-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon "
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/lokmeinmatz/WerWolf"
+  },
+  "keywords": [
+    "game",
+    "js",
+    "web"
+  ],
+  "author": "lokmeinmatz",
+  "license": "ISC",
+  "dependencies": {
+    "@types/socket.io": "^2.1.2",
+    "socket.io": "^2.2.0"
+  }
+}
